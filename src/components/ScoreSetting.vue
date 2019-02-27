@@ -1,14 +1,14 @@
 <template>
   <div class='score-setting'>
     <el-row :gutter="10" type="flex" justify="start" align="middle">
-      <el-col :xs="12" :sm="12" :md="12" :lg="6" :xl="6">
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="grid-content">
           <span>甲级</span>
           <el-input v-model="scoreParam.typeA.minScore" placeholder="请输入内容"></el-input>
           <span><分数<={{scoreParam.typeA.maxScore}}</span>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="12" :md="12" :lg="6" :xl="6">
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="grid-content bg-purple-light">
           <el-select v-model="scoreParam.typeA.relationValue" placeholder="请选择">
             <el-option
@@ -36,24 +36,13 @@
 </template>
 
 <script>
+import {relationOptions, vetoOptions} from '@/assets/optionConfig.js';
 export default {
   name: 'ScoreSetting',
   data() {
     return {
-      relationOptions: [{
-        value: '且',
-        label: '且'
-      }, {
-        value: '或',
-        label: '或'
-      }],
-      vetoOptions: [{
-        value: '0',
-        label: '0'
-      }, {
-        value: '1',
-        label: '1'
-      }],
+      relationOptions,
+      vetoOptions,
       scoreParam: {
         typeA: {
           minValue: 0,
