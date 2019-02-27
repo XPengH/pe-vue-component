@@ -32,6 +32,7 @@
     <el-tree
       :data="levelData"
       node-key="id"
+      ref="tree"
       default-expand-all
       :indent="treeNodeLeftLength"
       @node-click="checkTreeNode"
@@ -39,7 +40,13 @@
     >
       <el-row  :gutter="10" type="flex" justify="space-between" align="middle" :class="['custom-tree-node',!data.switchState && 'disabled-bg']" slot-scope="{ node, data }" @click="checkTreeNode(data)">
         <el-col>
-          <el-input @change="inputchange(data)" :disabled="!data.switchState" type="number" v-model="data.maximumPoints" placeholder="请输入内容"></el-input>
+          <el-input
+            @change="inputchange(data)"
+            :disabled="!data.switchState || data.score === '单项否决' || data.score === '丙级'" 
+            type="number"
+            v-model="data.maximumPoints"
+            placeholder="请输入内容">
+          </el-input>
         </el-col>
         <el-col >
           <el-select
@@ -104,6 +111,7 @@ export default {
         defectContent: '缺陷内容', // 缺陷内容
         label: '一级 1', // 标题
         switchState: true, // 禁止开启开关状态
+        maximumPoints: 20,  // 最大分值
         children: [{
           id: 4,
           label: '二级 1-1',
