@@ -37,7 +37,7 @@
       @node-click="checkTreeNode"
       :expand-on-click-node="false"
     >
-      <el-row  :gutter="10" type="flex" justify="space-between" align="middle" class="custom-tree-node" slot-scope="{ node, data }" @click="checkTreeNode(data)">
+      <el-row  :gutter="10" type="flex" justify="space-between" align="middle" :class="['custom-tree-node',!data.switchState && 'disabled-bg']" slot-scope="{ node, data }" @click="checkTreeNode(data)">
         <el-col>
           <el-input @change="inputchange(data)" :disabled="!data.switchState" type="number" v-model="data.maximumPoints" placeholder="请输入内容"></el-input>
         </el-col>
@@ -182,4 +182,7 @@ export default {
 </script>
 
 <style scoped>
+.disabled-bg {
+  background-color: #ccc;
+}
 </style>
