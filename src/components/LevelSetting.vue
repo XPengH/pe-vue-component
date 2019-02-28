@@ -1,33 +1,20 @@
 <template>
   <div class="level-setting">
-    <el-row :gutter="0" type="flex" align="middle" >
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2" ref="from">
-        <span>来源</span>
+    <el-row :gutter="0" type="flex" align="middle" class="tree-header">
+      <el-col ref="from" class="level-from"><span>来源</span></el-col>
+      <el-col class="level-program"><span>项目</span></el-col>
+      <el-col class="level-defect-type"><span>缺陷类型</span></el-col>
+      <el-col class="level-defect-content"><span>缺陷内容</span></el-col>
+      <el-col class="level-score"><span>分值</span></el-col>
+      <el-col class="level-unit"><span>单位</span></el-col>
+      <el-col class="level-unified-item-state"><span>统一子项分值
+        <el-tooltip class="item" effect="light" content="“统一子项分值”：是指将该缺陷的各个子项目的分值与单位设置为同一内容。" placement="bottom">
+          <i class="el-icon-question"></i>
+        </el-tooltip>
+        </span>
       </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-        <span>项目</span>
-      </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-        <span>缺陷类型</span>
-      </el-col>
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-        <span>缺陷内容</span>
-      </el-col>
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-        <span>分值</span>
-      </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-        <span>单位</span>
-      </el-col>
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-        <span>统一子项分值</span>
-      </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-        <span>扣分上限</span>
-      </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-        <span>操作</span>
-      </el-col>
+      <el-col class="level-maximum-points"><span>扣分上限</span></el-col>
+      <el-col class="level-option"><span>操作</span></el-col>
     </el-row>
     <el-tree
       :data="levelData"
@@ -53,6 +40,7 @@
             v-if="data.score!==undefined"
             :disabled="!data.switchState || (data.unifiedItem === false) || data.unifiedItemState === false"
             v-model="data.score"
+            icon-class="el-icon-caret-bottom"
             placeholder="请选择"
             @change="scoreChange(data)"
             >
@@ -100,7 +88,7 @@ export default {
   name: 'LevelSetting',
   data() {
     return {
-      treeNodeLeftLength: 30, // 树形结构子节点靠左的距离
+      treeNodeLeftLength: 0, // 树形结构子节点靠左的距离
       scoreOptions, // 分值选项
       unitOptions, // 单位选项
       levelData: [{
@@ -192,5 +180,43 @@ export default {
 <style scoped>
 .disabled-bg {
   background-color: #ccc;
+}
+.tree-header{
+  background: rgba(246,248,250,1);
+  padding: 9px 46px;
+  color: #203152;
+}
+.level-from{
+  width: 82px;
+}
+.level-program{
+  width: 90px;
+}
+.level-defect-type{
+  width: 82px;
+}
+.level-defect-content{
+  width: 298px;
+}
+.level-score{
+  width: 132px;
+}
+.level-unit{
+  width: 96px;
+}
+.level-unified-item-state{
+  width: 128px;
+}
+.level-maximum-points{
+  width: 106px;
+}
+.level-option{
+  width: 58px;
+}
+.el-icon-question{
+  width:12px;
+  height:12px;
+  color:rgba(58,94,255,1);
+  opacity:0.3453;
 }
 </style>
