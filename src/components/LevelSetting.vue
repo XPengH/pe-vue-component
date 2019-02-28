@@ -183,7 +183,8 @@ export default {
 }
 .tree-header{
   background: rgba(246,248,250,1);
-  padding: 9px 46px;
+  padding: 9px 0px;
+  padding-left: 46px;
   color: #203152;
 }
 .level-from{
