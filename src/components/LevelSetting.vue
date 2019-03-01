@@ -25,23 +25,30 @@
       @node-click="checkTreeNode"
       :expand-on-click-node="false"
     >
-      <el-row  :gutter="10" type="flex" justify="space-between" align="middle" :class="['custom-tree-node',!data.switchState && 'disabled-bg']" slot-scope="{ node, data }" @click="checkTreeNode(data)">
-        <el-col>
-          <el-input
-            @change="inputchange(data)"
-            :disabled="!data.switchState || data.score === '单项否决' || data.score === '丙级'" 
-            type="number"
-            v-model="data.maximumPoints"
-            placeholder="请输入内容">
-          </el-input>
+      <el-row type="flex" justify="between" align="middle"  
+        :class="['custom-tree-node',!data.switchState && 'disabled-bg', data.level0 && 'level0-bg']" 
+        slot-scope="{ node, data }" 
+        @click="checkTreeNode(data)">
+        <el-col class="level-from">
+          <span>{{data.from}}</span>
         </el-col>
-        <el-col >
+        <el-col class="level-program">
+          <span>{{data.program}}</span>
+        </el-col>
+        <el-col class="level-defect-type">
+          <span :class="[data.defectType === '形式缺陷'? 'color-orange':'color-blue']">{{data.defectType}}</span>
+        </el-col>
+         <el-col class="level-defect-content">
+          <span>{{data.defectContent}}</span>
+        </el-col>
+         <el-col class="level-score">
           <el-select
             v-if="data.score!==undefined"
             :disabled="!data.switchState || (data.unifiedItem === false) || data.unifiedItemState === false"
             v-model="data.score"
             icon-class="el-icon-caret-bottom"
             placeholder="请选择"
+            size="mini"
             @change="scoreChange(data)"
             >
             <el-option
@@ -52,12 +59,13 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col >
+        <el-col class="level-unit">
           <el-select
             v-if="data.unit!==undefined"
             :disabled="!data.switchState || (data.unifiedItem === false) || data.unifiedItemState === false"
             v-model="data.unit"
             placeholder="请选择"
+            size="mini"
             @change="unitChange(data)"
           >
             <el-option
@@ -68,13 +76,33 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col >
-          <el-switch v-if="data.unifiedItem!==undefined" @change="unifiedItemSwitchChange(data)" v-model="data.unifiedItem" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        <el-col class="level-unified-item-state">
+          <el-switch 
+            v-if="data.unifiedItem!==undefined" 
+            @change="unifiedItemSwitchChange(data)"
+            v-model="data.unifiedItem"
+            active-color="#3A5EFF"
+            inactive-color="#ff4949">
+          </el-switch>
         </el-col>
-        <el-col>
-          <span>禁用</span>
-          <el-switch @change="enbaledSwitchChange(data)" v-model="data.switchState" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-          <span>启用</span>
+        <el-col class="level-maximum-points">
+          <el-input
+            v-if="data.maximumPoints"
+            @change="inputchange(data)"
+            :disabled="!data.switchState || data.score === '单项否决' || data.score === '丙级'" 
+            type="number"
+            v-model="data.maximumPoints"
+            placeholder="请输入内容">
+          </el-input>
+        </el-col>
+        
+        <el-col class="level-option">
+          <el-switch
+            @change="enbaledSwitchChange(data)"
+            v-model="data.switchState"
+            active-color="#3A5EFF"
+            inactive-color="#ff4949">
+          </el-switch>
         </el-col>
       </el-row>
     </el-tree>
@@ -86,45 +114,12 @@ import {scoreOptions, unitOptions} from '@/assets/optionConfig.js';
 let id = 10000;
 export default {
   name: 'LevelSetting',
+  props: ['levelData'],
   data() {
     return {
       treeNodeLeftLength: 0, // 树形结构子节点靠左的距离
       scoreOptions, // 分值选项
       unitOptions, // 单位选项
-      levelData: [{
-        id: 1,
-        from: '病案首页', // 来源
-        program: '基本要求', // 项目
-        defectType: '缺陷类型', // 缺陷类型
-        defectContent: '缺陷内容', // 缺陷内容
-        label: '一级 1', // 标题
-        switchState: true, // 禁止开启开关状态
-        maximumPoints: 20,  // 最大分值
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          switchState: true,
-          maximumPoints: 20,  // 最大分值
-          score: '无', // 分值
-          unit: '/项', // 单位
-          unifiedItem: false, // 统一子项分值 默认状态为false,表示状态未统一
-          children: [{
-            id: 9,
-            switchState: true,
-            score: '无',
-            unit: '/项',
-            unifiedItemState: true, // 子项中表示是否被统一的状态 true为默认状态未统一
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            score: '无',
-            unit: '/项',
-            unifiedItemState: true, // 子项中表示是否被统一的状态 true为默认状态未统一
-            switchState: true,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }]
     };
   },
   methods: {
@@ -178,8 +173,20 @@ export default {
 </script>
 
 <style scoped>
+.color-orange {
+  color: #F66107;
+}
+.color-blue {
+  color: #3A5EFF;
+}
+.custom-tree-node {
+  font-size: 12px;
+}
 .disabled-bg {
   background-color: #ccc;
+}
+.level0-bg{
+  background-color: rgba(242,242,242,1);
 }
 .tree-header{
   background: rgba(246,248,250,1);
@@ -188,31 +195,50 @@ export default {
   color: #203152;
 }
 .level-from{
+  min-width: 82px;
   width: 82px;
 }
 .level-program{
+  min-width: 90px;
   width: 90px;
 }
 .level-defect-type{
+  min-width: 82px;
   width: 82px;
 }
 .level-defect-content{
-  width: 298px;
+  min-width: 262px;
+  width: 262px;
 }
 .level-score{
-  width: 132px;
+  min-width: 100px;
+  width: 100px;
+  margin-right: 32px;
+  text-align: center;
 }
 .level-unit{
-  width: 96px;
+  min-width: 100px;
+  width: 100px;
+  text-align: center;
 }
 .level-unified-item-state{
-  width: 128px;
+  min-width: 148px;
+  width: 148px;
+  text-align: center;
+}
+.el-tree-node__content .level-unified-item-state {
+  text-align: center;
+  text-align: center;
 }
 .level-maximum-points{
-  width: 106px;
+  min-width: 80px;
+  text-align: center;
+  width: 80px;
 }
 .level-option{
-  width: 58px;
+  min-width: 96px;
+  text-align: center;
+  width: 96px;
 }
 .el-icon-question{
   width:12px;
