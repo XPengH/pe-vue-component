@@ -114,13 +114,17 @@ import {scoreOptions, unitOptions} from '@/assets/optionConfig.js';
 let id = 10000;
 export default {
   name: 'LevelSetting',
-  props: ['levelData'],
   data() {
     return {
       treeNodeLeftLength: 0, // 树形结构子节点靠左的距离
       scoreOptions, // 分值选项
       unitOptions, // 单位选项
     };
+  },
+  computed: {
+    levelData() {
+      return this.$store.state.qualityControl.levelData;
+    }
   },
   methods: {
     checkTreeNode (data) {
@@ -173,6 +177,11 @@ export default {
 </script>
 
 <style scoped>
+.level-setting {
+  height: 558px;
+  max-height: 558px;
+  overflow: scroll;
+}
 .color-orange {
   color: #F66107;
 }

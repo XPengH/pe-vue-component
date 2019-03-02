@@ -4,9 +4,9 @@
       <el-button size="medium" @click="dialogVisible = true">还原</el-button>
       <el-button type="primary" size="medium" @click="saveData()">保存</el-button>
     </el-row>
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" :before-leave="beforeLeave">
       <el-tab-pane label="病案等级设置" name="first">
-        <level-setting :levelData="levelData"/>
+        <level-setting/>
       </el-tab-pane>
       <el-tab-pane label="分数设置" name="second">
         <score-setting/>
@@ -23,6 +23,17 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="提示"
+      :visible.sync="tabDialogVisible"
+      width="30%"
+      >
+      <span>当前页有未保存设置，是否离开？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="changeTab()">确 定</el-button>
+        <el-button @click="tabDialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -37,88 +48,46 @@ export default {
   },
   data () {
     return {
-      activeName: 'first',
+      activeName: 'second',
       dialogVisible: false,
-      levelData: [{
-        id: 1,
-        from: '入院记录', // 来源
-        label: '一级 1', // 标题
-        switchState: true, // 禁止开启开关状态
-        children: [{
-          id: 4,
-          program: '基本要求', // 项目
-          label: '二级 1-1',
-          switchState: true,
-          maximumPoints: 1,  // 最大分值
-          children: [{
-            id: 9,
-            switchState: true,
-            score: '无',
-            unit: '/项',
-            defectType: '形式缺陷', // 缺陷类型
-            defectContent: '无住院记录', // 缺陷内容
-            label: '三级 1-1-1',
-            maximumPoints: 1,  // 最大分值
-          }, {
-            id: 11,
-            switchState: true,
-            score: '无',
-            unit: '/项',
-            defectType: '内涵缺陷', // 缺陷类型
-            defectContent: '住院记录24小时未完成', // 缺陷内容
-            label: '三级 1-1-1',
-            maximumPoints: 1,  // 最大分值
-          }, {
-            id: 10,
-            score: '无',
-            unit: '/项',
-            defectType: '形式缺陷', // 缺陷类型
-            defectContent: '药物过敏、血型信息填写缺陷', // 缺陷内容
-            unifiedItem: false, // 统一子项分值 默认状态为false,表示状态未统一
-            switchState: true,
-            label: '三级 1-1-2',
-            maximumPoints: 1,  // 最大分值
-            children: [{
-              id: 12,
-              switchState: true,
-              score: '无',
-              unit: '/项',
-              defectContent: '药物信息填写缺陷', // 缺陷内容
-              unifiedItemState: true, // todo: 初始化的时候将此参数加上，子项中表示是否被统一的状态 true为默认状态未统一
-              label: '三级 1-1-1',
-              maximumPoints: 1,  // 最大分值
-            },
-            {
-              id: 13,
-              switchState: true,
-              score: '无',
-              unit: '/项',
-              defectContent: '药物信息填写缺陷', // 缺陷内容
-              unifiedItemState: true, // 子项中表示是否被统一的状态 true为默认状态未统一
-              label: '三级 1-1-1',
-              maximumPoints: 1,  // 最大分值
-            }]
-          }]
-        }]
-      }]
+      tabDialogVisible: false,
+      newActiveName: '' // 目标tab
     };
   },
   mounted() {
     this.initializeData(); // 从初始化数据
   },
   methods: {
-    // 判断是否是根节点
-    rootCheck() {
-      this.levelData = this.levelData.map((item)=> {
-        item.level0 = true; // 判断是否是根节点，这个参数在获取到数据时遍历添加
-        return item;
-      });
+    handleClick () {
+      if (this.newActiveName === 'first') {
+        // todo 需要比对原始数组与现有数组，一开始拉到的数据做一次备份后对比, 如果有差别
+        this.tabDialogVisible = true;
+      }
+      if (this.newActiveName === 'second') {
+        this.tabDialogVisible = true;
+        // todo 需要比对原始数组与现有数组，一开始拉到的数据做一次备份后对比
+      }
+    },
+    changeTab () {
+      this.tabDialogVisible = false;
+      this.activeName = this.newActiveName;
+    },
+    beforeLeave (activeName, oldActiveName) {
+      if(this.activeName !== this.newActiveName && activeName !== oldActiveName) {
+        this.newActiveName = activeName;
+        this.handleClick();
+        return false;
+      } else {
+        this.newActiveName = '';
+      }
     },
     initializeData () {
       this.dialogVisible = false;
-      this.rootCheck();
+      this.$store.commit("rootCheck");
     },
     saveData () {
+      console.log(this.$store.state.qualityControl.levelData);
+      console.log(this.$store.state.qualityControl.scoreParam);
       // todo：成功提示，应该是统一组件
       // todo： 最好后端做最大分值逻辑的处理，如果商量不过再前端遍历树形结构计算
     }
@@ -131,6 +100,7 @@ export default {
 .main-content {
   color: #2c3e50;
   width: 1152px;
+  min-width: 1152px;
   font-size: 14px;
 }
 .main-content .el-tabs__header{
@@ -190,9 +160,33 @@ export default {
 .main-content .el-tabs__nav-wrap::after {
   height: 0px;
 }
-.main-content .el-input__inner {
+.main-content .level-setting .el-input__inner {
   height: 24px;
   font-size: 12px;
+}
+.main-content .score-setting .el-input__inner {
+  width: 100px;
+  height: 32px;
+  font-size: 12px;
+}
+.main-content .score-setting .el-input--mini {
+  font-size: 12px;
+  width: 100px;
+  min-width: 100px;
+}
+.main-content .score-setting .el-input--mini .button{
+  height: 16px;
+}
+.main-content .score-setting .el-input-number {
+  font-size: 12px;
+  width: 100px;
+  min-width: 100px;
+}
+.main-content .score-setting .el-icon-arrow-up:before {
+  line-height: 15px;
+}
+.main-content .score-setting .el-icon-arrow-down:before {
+  line-height: 15px;
 }
 .level-setting .custom-tree-node {
   height: 40px;
