@@ -27,7 +27,7 @@ const state = {
         defectType: '内涵缺陷', // 缺陷类型
         defectContent: '住院记录24小时未完成', // 缺陷内容
         label: '三级 1-1-1',
-        maximumPoints: 1, // 最大分值
+        maximumPoints: 1 // 最大分值
       }, {
         id: 10,
         score: '无',
@@ -44,7 +44,7 @@ const state = {
           score: '无',
           unit: '/项',
           defectContent: '药物信息填写缺陷', // 缺陷内容
-          unifiedItemState: true, // todo: 初始化的时候将此参数加上，子项中表示是否被统一的状态 true为默认状态未统一
+          unifiedItemState: true, // 子项中表示是否被统一的状态 true为默认状态未统一
           label: '三级 1-1-1',
           maximumPoints: 1 // 最大分值
         }, {

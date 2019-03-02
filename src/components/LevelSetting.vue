@@ -25,7 +25,7 @@
       @node-click="checkTreeNode"
       :expand-on-click-node="false"
     >
-      <el-row type="flex" justify="between" align="middle"  
+      <el-row type="flex" justify="between" align="middle"
         :class="['custom-tree-node',!data.switchState && 'disabled-bg', data.level0 && 'level0-bg']" 
         slot-scope="{ node, data }" 
         @click="checkTreeNode(data)">
@@ -111,18 +111,17 @@
 
 <script>
 import {scoreOptions, unitOptions} from '@/assets/optionConfig.js';
-let id = 10000;
 export default {
   name: 'LevelSetting',
   data() {
     return {
       treeNodeLeftLength: 0, // 树形结构子节点靠左的距离
       scoreOptions, // 分值选项
-      unitOptions, // 单位选项
+      unitOptions // 单位选项
     };
   },
   computed: {
-    levelData() {
+    levelData () {
       return this.$store.state.qualityControl.levelData;
     }
   },

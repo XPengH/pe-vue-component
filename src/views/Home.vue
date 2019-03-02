@@ -44,7 +44,7 @@ export default {
   name: 'Home',
   components: {
     ScoreSetting,
-    LevelSetting,
+    LevelSetting
   },
   data () {
     return {
@@ -54,7 +54,7 @@ export default {
       newActiveName: '' // 目标tab
     };
   },
-  mounted() {
+  mounted () {
     this.initializeData(); // 从初始化数据
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
       this.activeName = this.newActiveName;
     },
     beforeLeave (activeName, oldActiveName) {
-      if(this.activeName !== this.newActiveName && activeName !== oldActiveName) {
+      if (this.activeName !== this.newActiveName && activeName !== oldActiveName) {
         this.newActiveName = activeName;
         this.handleClick();
         return false;
@@ -83,7 +83,7 @@ export default {
     },
     initializeData () {
       this.dialogVisible = false;
-      this.$store.commit("rootCheck");
+      this.$store.commit('rootCheck');
     },
     saveData () {
       console.log(this.$store.state.qualityControl.levelData);
@@ -114,9 +114,9 @@ export default {
 }
 /*todo: tooltip这里的样式应该在样式库修改， 去除黑色border*/
 .el-tooltip__popper {
-  color: #606266; 
+  color: #606266;
 }
-/* 
+/*
 修改tree组件点击按钮样式
 */
 .main-content .el-tree-node__expand-icon {

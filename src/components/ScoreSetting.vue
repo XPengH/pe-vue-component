@@ -69,7 +69,6 @@
       </div>
     </el-row>
   </el-select>
-    
   </div>
 </template>
 
@@ -77,27 +76,27 @@
 import {relationOptions, vetoOptions} from '@/assets/optionConfig.js';
 export default {
   name: 'ScoreSetting',
-  data() {
+  data () {
     return {
       relationOptions,
       vetoOptions,
       scoreWarningShow: false,
-      vetoWarningShow: false,
+      vetoWarningShow: false
     };
   },
   computed: {
-    scoreParam() {
+    scoreParam () {
       return this.$store.state.qualityControl.scoreParam;
     }
   },
   methods: {
-    typeAMaxVetoNumberChange() {
+    typeAMaxVetoNumberChange () {
     },
-    typeAMinScoreChange() {
+    typeAMinScoreChange () {
       if (this.testNumber(this.scoreParam.typeA.minScore)) {
         const minScore = parseInt(this.scoreParam.typeA.minScore);
-        if ( minScore >= 99) {
-          this.scoreParam.typeA.minScore = 99; //下限最大99最小0
+        if (minScore >= 99) {
+          this.scoreParam.typeA.minScore = 99; // 下限最大99最小0
         }
         if (minScore <= 0) {
           this.scoreParam.typeA.minScore = 0;
@@ -105,7 +104,7 @@ export default {
         this.scoreParam.typeB.maxScore = this.scoreParam.typeA.minScore; // 修改乙级上限
       }
     },
-    typeBMinScoreChange() {
+    typeBMinScoreChange () {
       if (this.testNumber(this.scoreParam.typeB.minScore)) {
         const minScore = parseInt(this.scoreParam.typeB.minScore);
         if (minScore <= 0) {
@@ -114,19 +113,19 @@ export default {
         this.scoreParam.typeC.maxScore = this.scoreParam.typeB.minScore; // 修改丙级上限
       }
     },
-    typeBMaxScoreChange() {
+    typeBMaxScoreChange () {
       if (this.testNumber(this.scoreParam.typeB.maxScore)) {
         const maxScore = parseInt(this.scoreParam.typeB.maxScore);
-        if (maxScore >=99) {
+        if (maxScore >= 99) {
           this.scoreParam.typeB.maxScore = 99;
         }
         this.scoreParam.typeA.minScore = this.scoreParam.typeB.maxScore; // 修改甲级下限
       }
     },
-    typeCMaxScoreChange() {
+    typeCMaxScoreChange () {
       if (this.testNumber(this.scoreParam.typeC.maxScore)) {
         const maxScore = parseInt(this.scoreParam.typeC.maxScore);
-        if (maxScore >=99) {
+        if (maxScore >= 99) {
           this.scoreParam.typeC.maxScore = 99;
         }
         this.scoreParam.typeB.minScore = this.scoreParam.typeC.maxScore; // 修改甲级下限
@@ -135,7 +134,7 @@ export default {
     testNumber (data) {
       return /^[0-9]*$/.test(data);
     },
-    checkScoreWarning() {
+    checkScoreWarning () {
       this.typeBMaxScoreChange();
       this.typeBMinScoreChange();
       if (this.testNumber(this.scoreParam.typeB.minScore) && this.testNumber(this.scoreParam.typeB.maxScore)) {
@@ -147,7 +146,7 @@ export default {
         }
       }
     },
-    checkVetoWarning() {
+    checkVetoWarning () {
       if (this.testNumber(this.scoreParam.typeB.minVetoNumber) && this.testNumber(this.scoreParam.typeB.maxVetoNumber)) {
         const diff = parseInt(this.scoreParam.typeB.minVetoNumber) - parseInt(this.scoreParam.typeB.maxVetoNumber);
         if (diff > 0) {
