@@ -99,6 +99,7 @@ export default {
 <style>
 .main-content {
   color: #2c3e50;
+  background:rgba(241,243,246,1);
   width: 1152px;
   min-width: 1152px;
   font-size: 14px;

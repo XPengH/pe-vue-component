@@ -11,7 +11,4 @@ export default {
 </script>
 
 <style>
-#app {
-  background:rgba(241,243,246,1);
-}
 </style>
