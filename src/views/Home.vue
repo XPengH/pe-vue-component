@@ -129,7 +129,7 @@ export default {
 .el-icon-caret-right:before {
   content: '+';
   color: #595959;
-  margin-left: 3px;
+  margin: 0px 3px;
 }
 .el-tree-node__expand-icon.expanded {
   transform: rotate(0deg);
@@ -137,7 +137,6 @@ export default {
 .el-tree-node__expand-icon.expanded:before {
   content: '-';
   color: #595959;
-  margin-left: 3px;
 }
 .main-content .el-tree-node__expand-icon.is-leaf{
   border: none;
@@ -145,7 +144,8 @@ export default {
   height: 15px;
 }
 .main-content .el-tree-node__expand-icon.is-leaf::before{
-  content: ''
+  content: '';
+  margin: 0 3px;
 }
 .main-content .content-top-buttons {
   background-color: #fff;

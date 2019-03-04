@@ -25,7 +25,7 @@
       @node-click="checkTreeNode"
       :expand-on-click-node="false"
     >
-      <el-row type="flex" justify="between" align="middle"
+      <el-row type="flex"  align="middle"
         :class="['custom-tree-node',!data.switchState && 'disabled-bg', data.level0 && 'level0-bg']" 
         slot-scope="{ node, data }" 
         @click="checkTreeNode(data)">
@@ -87,12 +87,11 @@
         </el-col>
         <el-col class="level-maximum-points">
           <el-input
-            v-if="data.maximumPoints"
+            v-if="data.maximumPoints !== undefined"
             @change="inputchange(data)"
             :disabled="!data.switchState || data.score === '单项否决' || data.score === '丙级'" 
-            type="number"
             v-model="data.maximumPoints"
-            placeholder="请输入内容">
+            placeholder="扣分上限">
           </el-input>
         </el-col>
         
@@ -166,7 +165,6 @@ export default {
       }
     },
     inputchange (data) {
-      console.log(data);
     }
   },
   mounted () {
@@ -215,8 +213,8 @@ export default {
   width: 82px;
 }
 .level-defect-content{
-  min-width: 262px;
-  width: 262px;
+  min-width: 245px;
+  width: 248px;
 }
 .level-score{
   min-width: 100px;
