@@ -116,37 +116,6 @@ export default {
 .el-tooltip__popper {
   color: #606266;
 }
-/*
-修改tree组件点击按钮样式
-*/
-.main-content .el-tree-node__expand-icon {
-  width: 13px;
-  height: 13px;
-  margin: 0 16px;
-  padding: 0px;
-  border: 1px solid rgba(232,232,232,1);
-}
-.el-icon-caret-right:before {
-  content: '+';
-  color: #595959;
-  margin: 0px 3px;
-}
-.el-tree-node__expand-icon.expanded {
-  transform: rotate(0deg);
-}
-.el-tree-node__expand-icon.expanded:before {
-  content: '-';
-  color: #595959;
-}
-.main-content .el-tree-node__expand-icon.is-leaf{
-  border: none;
-  width: 15px;
-  height: 15px;
-}
-.main-content .el-tree-node__expand-icon.is-leaf::before{
-  content: '';
-  margin: 0 3px;
-}
 .main-content .content-top-buttons {
   background-color: #fff;
   padding-right: 32px;

@@ -187,6 +187,7 @@ export default {
 }
 .custom-tree-node {
   font-size: 12px;
+  padding-left: 23px;
 }
 .disabled-bg {
   background-color: #ccc;
